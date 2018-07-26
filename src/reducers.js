@@ -8,43 +8,47 @@ function todos(state = initialState, action) {
 
   switch (action.type) {
     case ADD_TODO:
-      return {todos:[
-        ...todo,
-        {
-          text: action.text,
-          completed: false,
-          id: action.id
-        }
-      ]}
+      return {
+        todos: [
+          ...todo,
+          {
+            text: action.text,
+            completed: false,
+            id: action.id
+          }
+        ]
+      }
     case TOGGLE_TODO:
-      return {todos: _.map(state.todos,(todo, index) => {    
-        if (todo.id.toString() === action.index) {
-          return Object.assign({}, todo, {
-            completed: !todo.completed
-          })
-        }
-        return todo
-      })}
+      return {
+        todos: _.map(state.todos, (todo, index) => {
+          if (todo.id.toString() === action.index) {
+            return Object.assign({}, todo, {
+              completed: !todo.completed
+            })
+          }
+          return todo
+        })
+      }
 
     case DELETE_TODO:
-     const delId = _.findIndex(todo , function(o){ return o.id == action.id})
-      _.pullAt(todo,delId)
-      return{todos:todo} 
+      const delId = _.findIndex(todo, function (o) { return o.id == action.id })
+      _.pullAt(todo, delId)
+      return { todos: todo }
 
     case EDIT_TODO:
-          if(action.text===""){
-            const delId = _.findIndex(todo , function(o){ return o.id == action.id})
-            _.pullAt(todo,action.id)
-            return{todos:todo} 
-          }
-          else{ 
-            todo[action.id].text=action.text;
-            return {
-              todos:todo
-          }
+      if (action.text === "") {
+        const delId = _.findIndex(todo, function (o) { return o.id == action.id })
+        _.pullAt(todo, action.id)
+        return { todos: todo }
+      }
+      else {
+        todo[action.id].text = action.text;
+        return {
+          todos: todo
         }
-       
-      
+      }
+
+
     default:
       return state
   }
