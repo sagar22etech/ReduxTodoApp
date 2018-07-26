@@ -2,22 +2,22 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { addTodo } from './actions'
 class AddToDo extends React.Component {
-  constructor({dispatch}) {
+  constructor({ dispatch }) {
     super();
-    this.dispatch=dispatch
-    this.value = '';
-    this.id=0;
+    this.dispatch = dispatch
     this.state = {
       id: 'text',
+      todoid: 0,
+      value: ''
     }
   }
   onChange = (event) => {
-    this.value = event.target.value;
+    this.state.value = event.target.value;
   }
   onSubmit = (event) => {
     event.preventDefault();
-    if (this.value.trim() !== '') {
-      this.dispatch(addTodo(this.value,this.id++));
+    if (this.state.value.trim() !== '') {
+      this.dispatch(addTodo(this.state.value, this.state.todoid++));
       this.setState({ id: 'text' });
     }
     else {
@@ -34,4 +34,4 @@ class AddToDo extends React.Component {
     </form>);
   }
 }
-export default connect() (AddToDo)
+export default connect()(AddToDo)
