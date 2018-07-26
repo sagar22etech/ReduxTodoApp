@@ -12,7 +12,7 @@ class AddToDo extends React.Component {
     }
   }
   onChange = (event) => {
-    this.state.value = event.target.value;
+    this.setState({ value: event.target.value })
   }
   onSubmit = (event) => {
     event.preventDefault();

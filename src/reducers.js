@@ -31,13 +31,12 @@ function todos(state = initialState, action) {
       }
 
     case DELETE_TODO:
-      const delId = _.findIndex(todo, function (o) { return o.id == action.id })
+      const delId = _.findIndex(todo, function (o) { return o.id === action.id })
       _.pullAt(todo, delId)
       return { todos: todo }
 
     case EDIT_TODO:
       if (action.text === "") {
-        const delId = _.findIndex(todo, function (o) { return o.id == action.id })
         _.pullAt(todo, action.id)
         return { todos: todo }
       }
