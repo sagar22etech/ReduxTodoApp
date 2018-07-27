@@ -1,53 +1,51 @@
 import { handleActions } from "redux-actions";
 import { addTodo, toggleTodo, deleteTodo, editTodo } from "./actions";
 import _ from "lodash";
+import update from "immutability-helper";
 
 const defaultState = { todos: [] };
 
 const handleAddTodo = (state, { payload: { text, id } }) => {
-  return {
-    todos: [
-      ...state.todos,
-      {
-        text: text,
-        completed: false,
-        id: id
-      }
-    ]
-  };
+  return update(state, {
+    todos: { $push: [{ text: text, completed: false, id: id }] }
+  });
 };
+
 const handleToggleTodo = (state, { payload: { id } }) => {
-  return {
-    todos: _.map(state.todos, todo => {
-      if (todo.id.toString() === id) {
-        return Object.assign({}, todo, {
-          completed: !todo.completed
-        });
+  let todo = _.clone(state.todos);
+  const toggleId = _.findIndex(todo, function(o) {
+    return o.id == id;
+  });
+  return update(state, {
+    todos: {
+      [toggleId]: {
+        completed: {
+          $apply: function(x) {
+            return !x;
+          }
+        }
       }
-      return todo;
-    })
-  };
+    }
+  });
 };
+
 const handleDeleteTodo = (state, { payload: { id } }) => {
   let todo = _.clone(state.todos);
   const delId = _.findIndex(todo, function(o) {
     return o.id == id;
   });
-  _.pullAt(todo, delId);
-  return { todos: todo };
+  return update(state, { todos: { $splice: [[delId, 1]] } });
 };
+
 const handleEditTodo = (state, { payload: { text, id } }) => {
   let todo = _.clone(state.todos);
   if (text === "") {
-    _.pullAt(todo, id);
-    return { todos: todo };
+    return update(state, { todos: { $splice: [[id, 1]] } });
   } else {
-    todo[id].text = text;
-    return {
-      todos: todo
-    };
+    return update(state, { todos: { [id]: { text: { $set: text } } } });
   }
 };
+
 const todos = handleActions(
   {
     [addTodo]: handleAddTodo,
