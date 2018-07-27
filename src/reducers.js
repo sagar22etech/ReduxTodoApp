@@ -31,7 +31,7 @@ function todos(state = initialState, action) {
       }
 
     case DELETE_TODO:
-      const delId = _.findIndex(todo, function (o) { return o.id === action.id })
+      const delId = _.findIndex(todo, function (o) { return o.id == action.id })
       _.pullAt(todo, delId)
       return { todos: todo }
 
