@@ -1,55 +1,61 @@
-import { ADD_TODO, TOGGLE_TODO, DELETE_TODO, EDIT_TODO } from './actions'
-import _ from 'lodash';
-const initialState = {
-  todos: []
-}
-function todos(state = initialState, action) {
+import { handleActions } from "redux-actions";
+import { addTodo, toggleTodo, deleteTodo, editTodo } from "./actions";
+import _ from "lodash";
+
+const defaultState = { todos: [] };
+
+const handleAddTodo = (state, { payload: { text, id } }) => {
+  return {
+    todos: [
+      ...state.todos,
+      {
+        text: text,
+        completed: false,
+        id: id
+      }
+    ]
+  };
+};
+const handleToggleTodo = (state, { payload: { id } }) => {
+  return {
+    todos: _.map(state.todos, todo => {
+      if (todo.id.toString() === id) {
+        return Object.assign({}, todo, {
+          completed: !todo.completed
+        });
+      }
+      return todo;
+    })
+  };
+};
+const handleDeleteTodo = (state, { payload: { id } }) => {
   let todo = _.clone(state.todos);
-
-  switch (action.type) {
-    case ADD_TODO:
-      return {
-        todos: [
-          ...todo,
-          {
-            text: action.text,
-            completed: false,
-            id: action.id
-          }
-        ]
-      }
-    case TOGGLE_TODO:
-      return {
-        todos: _.map(state.todos, (todo, index) => {
-          if (todo.id.toString() === action.index) {
-            return Object.assign({}, todo, {
-              completed: !todo.completed
-            })
-          }
-          return todo
-        })
-      }
-
-    case DELETE_TODO:
-      const delId = _.findIndex(todo, function (o) { return o.id == action.id })
-      _.pullAt(todo, delId)
-      return { todos: todo }
-
-    case EDIT_TODO:
-      if (action.text === "") {
-        _.pullAt(todo, action.id)
-        return { todos: todo }
-      }
-      else {
-        todo[action.id].text = action.text;
-        return {
-          todos: todo
-        }
-      }
-
-
-    default:
-      return state
+  const delId = _.findIndex(todo, function(o) {
+    return o.id == id;
+  });
+  _.pullAt(todo, delId);
+  return { todos: todo };
+};
+const handleEditTodo = (state, { payload: { text, id } }) => {
+  let todo = _.clone(state.todos);
+  if (text === "") {
+    _.pullAt(todo, id);
+    return { todos: todo };
+  } else {
+    todo[id].text = text;
+    return {
+      todos: todo
+    };
   }
-}
-export default todos
+};
+const todos = handleActions(
+  {
+    [addTodo]: handleAddTodo,
+    [toggleTodo]: handleToggleTodo,
+    [deleteTodo]: handleDeleteTodo,
+    [editTodo]: handleEditTodo
+  },
+  defaultState
+);
+
+export default todos;
