@@ -38,7 +38,6 @@ const handleDeleteTodo = (state, { payload: { id } }) => {
 };
 
 const handleEditTodo = (state, { payload: { text, id } }) => {
-  let todo = _.clone(state.todos);
   if (text === "") {
     return update(state, { todos: { $splice: [[id, 1]] } });
   } else {
