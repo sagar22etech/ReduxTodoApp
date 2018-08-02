@@ -1,13 +1,68 @@
 import { handleActions } from "redux-actions";
-import { addTodo, toggleTodo, deleteTodo, editTodo } from "./actions";
-import _ from "lodash";
+import { toggleTodo, editTodo } from "./actions";
+import {
+  createToDoSuccess,
+  createToDoError,
+  listToDoSuccess,
+  listToDoError,
+  deleteToDoSuccess,
+  deleteToDoError
+} from "./actions";
+import _ from 'lodash';
 import update from "immutability-helper";
 
-const defaultState = { todos: [] };
+const defaultState = {
+  todos: [],
+  isAddTodoMounted:false,
+  isTodoAdded: false,
+  islistloading: false,
+  isDelete: false
+};
 
-const handleAddTodo = (state, { payload: { text, id } }) => {
+const handleCreateTodoSuccess = (state, data) => {
   return update(state, {
-    todos: { $push: [{ text: text, completed: false, id: id }] }
+    isAddTodoMounted: { $set: true },
+    isTodoAdded: { $set: true },
+    islistloading: { $set: false },
+    isDelete: { $set: false }
+  });
+};
+
+const handleCreateTodoError = (state, data) => {
+  return update(state, {
+    
+    isTodoAdded: { $set: false },
+    islistloading: { $set: false },
+    isDelete: { $set: false }
+  });
+};
+
+const handleListToDoSuccess = (state, data) => {
+  return update(state, {
+    todos: { $set: data.payload },
+    islistloading: { $set: true },
+    isDelete: { $set: false }
+  });
+};
+
+const handleListToDoError = (state, data) => {
+  return update(state, {
+    islistloading: { $set: false },
+    isDelete: { $set: false }
+  });
+};
+
+const handleDeleteToDoSuccess = (state, data) => {
+  return update(state, {
+    islistloading: { $set: false },
+    isDelete: { $set: true }
+  });
+};
+
+const handleDeleteToDoError = (state, data) => {
+  return update(state, {
+    islistloading: { $set: false },
+    isDelete: { $set: false }
   });
 };
 
@@ -29,28 +84,16 @@ const handleToggleTodo = (state, { payload: { id } }) => {
   });
 };
 
-const handleDeleteTodo = (state, { payload: { id } }) => {
-  let todo = _.clone(state.todos);
-  const delId = _.findIndex(todo, function(o) {
-    return o.id == id;
-  });
-  return update(state, { todos: { $splice: [[delId, 1]] } });
-};
-
-const handleEditTodo = (state, { payload: { text, id } }) => {
-  if (text === "") {
-    return update(state, { todos: { $splice: [[id, 1]] } });
-  } else {
-    return update(state, { todos: { [id]: { text: { $set: text } } } });
-  }
-};
 
 const todos = handleActions(
   {
-    [addTodo]: handleAddTodo,
     [toggleTodo]: handleToggleTodo,
-    [deleteTodo]: handleDeleteTodo,
-    [editTodo]: handleEditTodo
+    [createToDoSuccess]: handleCreateTodoSuccess,
+    [createToDoError]: handleCreateTodoError,
+    [listToDoSuccess]: handleListToDoSuccess,
+    [listToDoError]: handleListToDoError,
+    [deleteToDoSuccess]: handleDeleteToDoSuccess,
+    [deleteToDoError]: handleDeleteToDoError
   },
   defaultState
 );
