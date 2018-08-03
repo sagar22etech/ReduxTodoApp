@@ -1,48 +1,50 @@
-import Axios from "axios";
+import callAjax from "./services/ajaxcall";
 import { all, takeLatest, put, call } from "redux-saga/effects";
 import constants from "./constants";
 import * as actions from "./actions";
 
-function data(URL, method, data) {
-  const url = `http://localhost:3000/` + URL;
-  if (method === "GET") {
-    return Axios.get(url, data);
-  }
-  if (method === "DELETE") {
-    return Axios.delete(url, data);
-  } else {
-    return Axios.post(url, data);
-  }
-}
-
 export function* createToDo(action) {
-  const response = yield call(data, "todos", "POST", {
-    id: action.payload.id,
-    text: action.payload.text,
-    completed: false
-  });
-  if (response.status === 201) {
-    yield put(actions.createToDoSuccess());
-  } else {
+  try {
+    const response = yield call(callAjax, "todos", "POST", {
+      id: action.payload.id,
+      text: action.payload.text,
+      completed: false
+    });
+    if (response.status === 201) {
+      yield put(actions.createToDoSuccess());
+    }
+  } catch (error) {
     yield put(actions.createToDoError());
+    console.log(error);
   }
 }
 
 export function* requestListToDo() {
-  const response = yield call(data, "todos", "GET", null);
-  if (response) {
-    yield put(actions.listToDoSuccess(response.data));
-  } else {
-    yield put(actions.listToDoError());
+  try {
+    const response = yield call(callAjax, "todos", "GET", null);
+    if (response) {
+      yield put(actions.requestListToDoSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(actions.requestListToDoError());
+    console.log(error);
   }
 }
 
 export function* deleteToDo(action) {
-  const response = yield call(data, "todos/" + action.payload, "DELETE", null);
-  if (response.status === 200) {
-    yield put(actions.deleteToDoSuccess());
-  } else {
+  try {
+    const response = yield call(
+      callAjax,
+      "todos/" + action.payload,
+      "DELETE",
+      null
+    );
+    if (response.status === 200) {
+      yield put(actions.deleteToDoSuccess());
+    }
+  } catch (error) {
     yield put(actions.deleteToDoError());
+    console.log(error);
   }
 }
 
