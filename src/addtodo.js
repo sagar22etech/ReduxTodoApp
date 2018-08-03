@@ -21,8 +21,7 @@ class AddToDo extends React.Component {
         text: this.state.value,
         id: this.state.todoid++
       });
-      this.setState({ id: "text" });
-      this.setState({ value: "" });
+      this.setState({ id: "text", value: "" });
     } else {
       this.setState({ id: "error" });
     }
@@ -44,12 +43,17 @@ class AddToDo extends React.Component {
         <button type="submit" className="btn btn-default">
           Submit
         </button>
-       {this.props.isTodoAdded && this.props.isAddTodoMounted ? <span>Todo Added Successfully</span> : null}
+        {this.props.isTodoAdded && this.props.isAddTodoMounted ? (
+          <span>Todo Added Successfully</span>
+        ) : null}
       </form>
     );
   }
 }
-const mapStateToProps = state => ({isTodoAdded:state.isTodoAdded,isAddTodoMounted:state.isAddTodoMounted});
+const mapStateToProps = state => ({
+  isTodoAdded: state.isTodoAdded,
+  isAddTodoMounted: state.isAddTodoMounted
+});
 const mapDispatchToProps = dispatch => ({
   createToDo: payload => dispatch(createToDo(payload))
 });
