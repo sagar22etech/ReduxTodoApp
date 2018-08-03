@@ -1,7 +1,7 @@
 import Axios from "axios";
-
+import baseurl from "../config/config"
 export default function callAjax(URL, method, data) {
-  const url = `http://localhost:3000/` + URL;
+  const url = baseurl + URL;
   if (method === "GET") {
     return Axios.get(url, data);
   } else if (method === "DELETE") {

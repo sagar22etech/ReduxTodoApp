@@ -3,8 +3,8 @@ import { toggleTodo, editTodo } from "./actions";
 import {
   createToDoSuccess,
   createToDoError,
-  listToDoSuccess,
-  listToDoError,
+  requestListToDoSuccess,
+  requestListToDoError,
   deleteToDoSuccess,
   deleteToDoError
 } from "./actions";
@@ -90,8 +90,8 @@ const todos = handleActions(
     [toggleTodo]: handleToggleTodo,
     [createToDoSuccess]: handleCreateTodoSuccess,
     [createToDoError]: handleCreateTodoError,
-    [listToDoSuccess]: handleListToDoSuccess,
-    [listToDoError]: handleListToDoError,
+    [requestListToDoSuccess]: handleListToDoSuccess,
+    [requestListToDoError]: handleListToDoError,
     [deleteToDoSuccess]: handleDeleteToDoSuccess,
     [deleteToDoError]: handleDeleteToDoError
   },
