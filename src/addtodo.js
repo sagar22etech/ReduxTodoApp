@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addTodo } from "./actions";
+import { createToDo } from "./actions";
 class AddToDo extends React.Component {
   constructor({ dispatch }) {
     super();
     this.dispatch = dispatch;
     this.state = {
       id: "text",
-      todoid: 0,
+      todoid: 1,
       value: ""
     };
   }
@@ -17,9 +17,11 @@ class AddToDo extends React.Component {
   onSubmit = event => {
     event.preventDefault();
     if (this.state.value.trim() !== "") {
-      this.dispatch(addTodo(this.state.value, this.state.todoid++));
-      this.setState({ id: "text" });
-      this.setState({ value: "" });
+      this.props.createToDo({
+        text: this.state.value,
+        id: this.state.todoid++
+      });
+      this.setState({ id: "text", value: "" });
     } else {
       this.setState({ id: "error" });
     }
@@ -41,8 +43,22 @@ class AddToDo extends React.Component {
         <button type="submit" className="btn btn-default">
           Submit
         </button>
+        {this.props.isTodoAdded && this.props.isAddTodoMounted ? (
+          <span>Todo Added Successfully</span>
+        ) : null}
       </form>
     );
   }
 }
-export default connect()(AddToDo);
+const mapStateToProps = state => ({
+  isTodoAdded: state.isTodoAdded,
+  isAddTodoMounted: state.isAddTodoMounted
+});
+const mapDispatchToProps = dispatch => ({
+  createToDo: payload => dispatch(createToDo(payload))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddToDo);

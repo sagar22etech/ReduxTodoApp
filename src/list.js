@@ -6,6 +6,9 @@ export default class List extends React.Component {
     this.isTrue = this.props.location.pathname === "/listtodo";
   }
 
+  componentDidMount() {
+    this.props.requestListToDo();
+  }
   onChange = e => {
     this.props.toggleTodo(e.target.id);
   };
@@ -17,6 +20,9 @@ export default class List extends React.Component {
   }
 
   render() {
+    if (this.props.isDelete === true) {
+      this.props.requestListToDo();
+    }
     if (this.props.todos == null) {
       return <p>Nothing To Show</p>;
     }
