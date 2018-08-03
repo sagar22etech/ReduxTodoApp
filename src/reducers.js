@@ -1,12 +1,14 @@
 import { handleActions } from "redux-actions";
-import { toggleTodo, editTodo } from "./actions";
+import { toggleTodo} from "./actions";
 import {
   createToDoSuccess,
   createToDoError,
   requestListToDoSuccess,
   requestListToDoError,
   deleteToDoSuccess,
-  deleteToDoError
+  deleteToDoError,
+  editToDoSuccess,
+  editToDoError
 } from "./actions";
 import _ from 'lodash';
 import update from "immutability-helper";
@@ -16,7 +18,8 @@ const defaultState = {
   isAddTodoMounted:false,
   isTodoAdded: false,
   islistloading: false,
-  isDelete: false
+  isDelete: false,
+  isEditSuccesful: false
 };
 
 const handleCreateTodoSuccess = (state, data) => {
@@ -84,6 +87,17 @@ const handleToggleTodo = (state, { payload: { id } }) => {
   });
 };
 
+const handleEditToDoSuccess = (state, data) => {
+  return update(state, {
+    isEditSuccesful: { $set: true }
+  });
+};
+
+const handleEditToDoError = (state, data) => {
+  return update(state, {
+    isEditSuccesful: { $set: false }
+  });
+};
 
 const todos = handleActions(
   {
@@ -93,7 +107,9 @@ const todos = handleActions(
     [requestListToDoSuccess]: handleListToDoSuccess,
     [requestListToDoError]: handleListToDoError,
     [deleteToDoSuccess]: handleDeleteToDoSuccess,
-    [deleteToDoError]: handleDeleteToDoError
+    [deleteToDoError]: handleDeleteToDoError,
+    [editToDoSuccess]: handleEditToDoSuccess,
+    [editToDoError]: handleEditToDoError
   },
   defaultState
 );
