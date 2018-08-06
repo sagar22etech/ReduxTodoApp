@@ -15,7 +15,6 @@ export function* createToDo(action) {
     }
   } catch (error) {
     yield put(actions.createToDoError());
-    console.log(error);
   }
 }
 
@@ -27,7 +26,6 @@ export function* requestListToDo() {
     }
   } catch (error) {
     yield put(actions.requestListToDoError());
-    console.log(error);
   }
 }
 
@@ -44,12 +42,10 @@ export function* deleteToDo(action) {
     }
   } catch (error) {
     yield put(actions.deleteToDoError());
-    console.log(error);
   }
 }
 
 export function* editToDo(action) {
-  console.log(action);
   try {
     const response = yield call(
       callAjax,
@@ -62,7 +58,6 @@ export function* editToDo(action) {
     }
   } catch (error) {
     yield put(actions.editToDoError());
-    console.log(error);
   }
 }
 
@@ -79,7 +74,6 @@ export function* toggleToDo(action) {
     }
   } catch (error) {
     yield put(actions.toggleToDoError());
-    console.log(error);
   }
 }
 
