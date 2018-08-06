@@ -66,11 +66,29 @@ export function* editToDo(action) {
   }
 }
 
+export function* toggleToDo(action) {
+  try {
+    const response = yield call(
+      callAjax,
+      "todos/" + action.payload.id,
+      "PUT",
+      {id:action.payload.id,text:action.payload.text,completed:action.payload.completed}
+    );
+    if (response.status === 200) {
+      yield put(actions.toggleToDoSuccess());
+    }
+  } catch (error) {
+    yield put(actions.toggleToDoError());
+    console.log(error);
+  }
+}
+
 export function* watchaddData() {
   yield takeLatest(constants.CREATE_TO_DO, createToDo);
   yield takeLatest(constants.REQUEST_LIST_TO_DO, requestListToDo);
   yield takeLatest(constants.DELETE_TO_DO, deleteToDo);
   yield takeLatest(constants.EDIT_TO_DO, editToDo);
+  yield takeLatest(constants.TOGGLE_TO_DO, toggleToDo);
 }
 
 export default function* rootSaga() {

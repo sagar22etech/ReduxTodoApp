@@ -1,10 +1,6 @@
 import { createActions, createAction } from "redux-actions";
 import constants from './constants'
 
-export const { toggleTodo } = createActions({
-  TOGGLE_TODO: id => ({ id }),
-});
-
 export const createToDo = createAction(constants.CREATE_TO_DO)
 export const createToDoSuccess = createAction(constants.CREATE_TO_DO_SUCCESS)
 export const createToDoError = createAction(constants.CREATE_TO_DO_ERROR)
@@ -17,3 +13,6 @@ export const deleteToDoError = createAction(constants.DELETE_TO_DO_ERROR)
 export const editToDo= createAction(constants.EDIT_TO_DO)
 export const editToDoSuccess= createAction(constants.EDIT_TO_DO_SUCCESS)
 export const editToDoError= createAction(constants.EDIT_TO_DO_ERROR)
+export const toggleToDo= createAction(constants.TOGGLE_TO_DO)
+export const toggleToDoSuccess= createAction(constants.TOGGLE_TO_DO_SUCCESS)
+export const toggleToDoError= createAction(constants.TOGGLE_TO_DO_ERROR)

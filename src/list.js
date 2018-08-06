@@ -9,15 +9,15 @@ export default class List extends React.Component {
   componentDidMount(props) {
     this.props.requestListToDo();
   }
-  onChange = e => {
-    this.props.toggleTodo(e.target.id);
+  onChange = (data) => {
+    this.props.toggleToDo(data);
   };
   onClick(e) {
     this.props.deleteTodo(e.target.id);
   }
 
   render() {
-    if (this.props.isDelete) {
+    if (this.props.isDelete||this.props.isToggleSuccessful) {
       this.props.requestListToDo();
     }
     if (this.props.todos == null) {
@@ -31,7 +31,7 @@ export default class List extends React.Component {
               checked={data.completed}
               type="checkbox"
               style={{ verticalAlign: "sub" }}
-              onChange={this.onChange}
+              onChange={()=>this.onChange({id:data.id,text:data.text,completed:!data.completed})}
               id={data.id}
             />
                <Link to={`/edittodo/${data.id}`} id={data.id}>

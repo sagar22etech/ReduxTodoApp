@@ -8,7 +8,9 @@ import {
   deleteToDoSuccess,
   deleteToDoError,
   editToDoSuccess,
-  editToDoError
+  editToDoError,
+  toggleToDoSuccess,
+  toggleToDoError
 } from "./actions";
 import _ from 'lodash';
 import update from "immutability-helper";
@@ -19,7 +21,8 @@ const defaultState = {
   isTodoAdded: false,
   islistloading: false,
   isDelete: false,
-  isEditSuccesful: false
+  isEditSuccesful: false,
+  isToggleSuccessful: false
 };
 
 const handleCreateTodoSuccess = (state, data) => {
@@ -69,22 +72,16 @@ const handleDeleteToDoError = (state, data) => {
   });
 };
 
-const handleToggleTodo = (state, { payload: { id } }) => {
-  let todo = _.clone(state.todos);
-  const toggleId = _.findIndex(todo, function(o) {
-    return o.id == id;
-  });
-  return update(state, {
-    todos: {
-      [toggleId]: {
-        completed: {
-          $apply: function(x) {
-            return !x;
-          }
-        }
-      }
-    }
-  });
+const handleToggleToDoSuccess = (state, data) => {
+  return update(state,{
+    isToggleSuccessful: { $set: true}
+  })
+};
+
+const handleToggleToDoError = (state, data) => {
+  return update(state,{
+    isToggleSuccessful: { $set: false}
+  })
 };
 
 const handleEditToDoSuccess = (state, data) => {
@@ -101,7 +98,8 @@ const handleEditToDoError = (state, data) => {
 
 const todos = handleActions(
   {
-    [toggleTodo]: handleToggleTodo,
+    [toggleToDoSuccess]: handleToggleToDoSuccess,
+    [toggleToDoError]: handleToggleToDoError,
     [createToDoSuccess]: handleCreateTodoSuccess,
     [createToDoError]: handleCreateTodoError,
     [requestListToDoSuccess]: handleListToDoSuccess,
