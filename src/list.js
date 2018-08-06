@@ -1,26 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 export default class List extends React.Component {
   constructor(props) {
     super(props);
     this.isTrue = this.props.location.pathname === "/listtodo";
   }
-
-  componentDidMount() {
+  componentDidMount(props) {
     this.props.requestListToDo();
   }
-  onChange = e => {
-    this.props.toggleTodo(e.target.id);
-  };
-  onEdit = e => {
-    this.props.editTodo(e.target.value, e.target.id);
+  onChange = (data) => {
+    this.props.toggleToDo(data);
   };
   onClick(e) {
     this.props.deleteTodo(e.target.id);
   }
 
   render() {
-    if (this.props.isDelete === true) {
+    if (this.props.isDelete||this.props.isToggleSuccessful) {
       this.props.requestListToDo();
     }
     if (this.props.todos == null) {
@@ -34,30 +31,12 @@ export default class List extends React.Component {
               checked={data.completed}
               type="checkbox"
               style={{ verticalAlign: "sub" }}
-              onChange={this.onChange}
+              onChange={()=>this.onChange({id:data.id,text:data.text,completed:!data.completed})}
               id={data.id}
             />
-            {this.isTrue ? (
-              <input
-                type="text"
-                id={i}
-                value={data.text}
-                onChange={e => this.onEdit(e)}
-                style={{ border: "none" }}
-                disabled={this.isTrue}
-              />
-            ) : (
-              <Link to={`/edittodo/${i}`} id={i}>
-                <input
-                  type="text"
-                  id={i}
-                  value={data.text}
-                  onChange={e => this.onEdit(e)}
-                  style={{ border: "none" }}
-                  disabled={this.isTrue}
-                />
+               <Link to={`/edittodo/${data.id}`} id={data.id}>
+                <span>{data.text}</span>
               </Link>
-            )}
             {data.completed ? (
               <div className="badges">
                 <span className="badge badge-success">Complete</span>&nbsp;&nbsp;<span

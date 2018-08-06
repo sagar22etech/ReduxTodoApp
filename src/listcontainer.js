@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { toggleTodo, deleteToDo, editTodo, requestListToDo } from "./actions";
+import { toggleToDo, deleteToDo, editToDo, requestListToDo } from "./actions";
 import List from "./list";
 
 const mapStateToProps = state => {
@@ -7,15 +7,17 @@ const mapStateToProps = state => {
     todos: state.todos,
     isTodoAdded: state.isTodoAdded,
     islistloading: state.islistloading,
-    isDelete: state.isDelete
+    isDelete: state.isDelete,
+    isEditSuccesful: state.isEditSuccesful,
+    isToggleSuccessful: state.isToggleSuccessful
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  toggleTodo: id => dispatch(toggleTodo(id)),
   deleteTodo: id => dispatch(deleteToDo(id)),
-  editTodo: (text, id) => dispatch(editTodo(text, id)),
-  requestListToDo: () => dispatch(requestListToDo())
+  editToDo: (payload) => dispatch(editToDo(payload)),
+  requestListToDo: () => dispatch(requestListToDo()),
+  toggleToDo : (payload) => dispatch(toggleToDo(payload))
 });
 
 export default connect(

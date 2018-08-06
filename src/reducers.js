@@ -1,12 +1,16 @@
 import { handleActions } from "redux-actions";
-import { toggleTodo, editTodo } from "./actions";
+import { toggleTodo} from "./actions";
 import {
   createToDoSuccess,
   createToDoError,
   requestListToDoSuccess,
   requestListToDoError,
   deleteToDoSuccess,
-  deleteToDoError
+  deleteToDoError,
+  editToDoSuccess,
+  editToDoError,
+  toggleToDoSuccess,
+  toggleToDoError
 } from "./actions";
 import _ from 'lodash';
 import update from "immutability-helper";
@@ -16,7 +20,9 @@ const defaultState = {
   isAddTodoMounted:false,
   isTodoAdded: false,
   islistloading: false,
-  isDelete: false
+  isDelete: false,
+  isEditSuccesful: false,
+  isToggleSuccessful: false
 };
 
 const handleCreateTodoSuccess = (state, data) => {
@@ -66,34 +72,42 @@ const handleDeleteToDoError = (state, data) => {
   });
 };
 
-const handleToggleTodo = (state, { payload: { id } }) => {
-  let todo = _.clone(state.todos);
-  const toggleId = _.findIndex(todo, function(o) {
-    return o.id == id;
-  });
+const handleToggleToDoSuccess = (state, data) => {
+  return update(state,{
+    isToggleSuccessful: { $set: true}
+  })
+};
+
+const handleToggleToDoError = (state, data) => {
+  return update(state,{
+    isToggleSuccessful: { $set: false}
+  })
+};
+
+const handleEditToDoSuccess = (state, data) => {
   return update(state, {
-    todos: {
-      [toggleId]: {
-        completed: {
-          $apply: function(x) {
-            return !x;
-          }
-        }
-      }
-    }
+    isEditSuccesful: { $set: true }
   });
 };
 
+const handleEditToDoError = (state, data) => {
+  return update(state, {
+    isEditSuccesful: { $set: false }
+  });
+};
 
 const todos = handleActions(
   {
-    [toggleTodo]: handleToggleTodo,
+    [toggleToDoSuccess]: handleToggleToDoSuccess,
+    [toggleToDoError]: handleToggleToDoError,
     [createToDoSuccess]: handleCreateTodoSuccess,
     [createToDoError]: handleCreateTodoError,
     [requestListToDoSuccess]: handleListToDoSuccess,
     [requestListToDoError]: handleListToDoError,
     [deleteToDoSuccess]: handleDeleteToDoSuccess,
-    [deleteToDoError]: handleDeleteToDoError
+    [deleteToDoError]: handleDeleteToDoError,
+    [editToDoSuccess]: handleEditToDoSuccess,
+    [editToDoError]: handleEditToDoError
   },
   defaultState
 );
