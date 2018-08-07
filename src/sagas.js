@@ -71,6 +71,7 @@ export function* toggleToDo(action) {
     );
     if (response.status === 200) {
       yield put(actions.toggleToDoSuccess());
+      yield all([requestListToDo({type:"REQUEST_LIST_TO_DO"})])
     }
   } catch (error) {
     yield put(actions.toggleToDoError());

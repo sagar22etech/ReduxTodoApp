@@ -17,7 +17,7 @@ export default class List extends React.Component {
   }
 
   render() {
-    if (this.props.isDelete||this.props.isToggleSuccessful) {
+    if (this.props.isDelete) {
       this.props.requestListToDo();
     }
     if (this.props.todos == null) {
