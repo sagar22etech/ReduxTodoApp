@@ -1,5 +1,24 @@
 {
   "todos": [
-    
+    {
+      "id": 1,
+      "text": "gkgkuk",
+      "completed": true
+    },
+    {
+      "id": 2,
+      "text": "jkjhkjhk",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "text": "hjkhjkjhkjh",
+      "completed": false
+    },
+    {
+      "id": 4,
+      "text": "khjkjhkjhk",
+      "completed": false
+    }
   ]
 }

@@ -2,9 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { createToDo } from "./actions";
 class AddToDo extends React.Component {
-  constructor({ dispatch }) {
+  constructor() {
     super();
-    this.dispatch = dispatch;
     this.state = {
       id: "text",
       todoid: 1,

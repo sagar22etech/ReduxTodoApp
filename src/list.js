@@ -17,11 +17,8 @@ export default class List extends React.Component {
   }
 
   render() {
-    if (this.props.isDelete) {
-      this.props.requestListToDo();
-    }
-    if (this.props.todos == null) {
-      return <p>Nothing To Show</p>;
+    if (this.props.todos.length==0) {
+      return <p>Nothing To Show</p>;  
     }
     return (
       <ul className="list-group">
